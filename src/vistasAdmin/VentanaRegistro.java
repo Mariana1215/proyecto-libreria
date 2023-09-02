@@ -4,17 +4,30 @@
  */
 package vistasAdmin;
 
+import controladores.ControladorUsuario;
+import enums.Rol;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelos.Usuario;
+
 /**
  *
  * @author LENOVO
  */
 public class VentanaRegistro extends javax.swing.JFrame {
 
+    ControladorUsuario controlador;
+
     /**
      * Creates new form VentanaRegistro
      */
     public VentanaRegistro() {
         initComponents();
+        setLocationRelativeTo(this);
+        controlador = new ControladorUsuario();
+        llenarTabla();
     }
 
     /**
@@ -26,7 +39,8 @@ public class VentanaRegistro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jTextField7 = new javax.swing.JTextField();
+        gestionUsuario = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         lblRegistro = new javax.swing.JLabel();
         lblContrasenia = new javax.swing.JLabel();
@@ -35,17 +49,30 @@ public class VentanaRegistro extends javax.swing.JFrame {
         lblCedula = new javax.swing.JLabel();
         lblTelefono = new javax.swing.JLabel();
         lblCorreo = new javax.swing.JLabel();
-        lblRol = new javax.swing.JLabel();
+        txtContrasenia = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaUsuarios = new javax.swing.JTable();
+
+        jTextField7.setText("jTextField7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        gestionUsuario.setBackground(new java.awt.Color(255, 255, 255));
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 102));
 
         lblRegistro.setFont(new java.awt.Font("Segoe UI Light", 1, 18)); // NOI18N
         lblRegistro.setForeground(new java.awt.Color(0, 0, 102));
-        lblRegistro.setText("REGISTRO DE USUARIOS Y ADMINISTRADORES");
+        lblRegistro.setText("GESTIÓN DE USUARIOS");
 
         lblContrasenia.setBackground(new java.awt.Color(255, 255, 255));
         lblContrasenia.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
@@ -57,125 +84,360 @@ public class VentanaRegistro extends javax.swing.JFrame {
         lblUsuario.setForeground(new java.awt.Color(0, 0, 102));
         lblUsuario.setText("Usuario");
 
+        lblNombre.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(0, 0, 102));
         lblNombre.setText("Nombre");
 
+        lblCedula.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        lblCedula.setForeground(new java.awt.Color(0, 0, 102));
         lblCedula.setText("Cédula");
 
+        lblTelefono.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        lblTelefono.setForeground(new java.awt.Color(0, 0, 102));
         lblTelefono.setText("Teléfono");
 
+        lblCorreo.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        lblCorreo.setForeground(new java.awt.Color(0, 0, 102));
         lblCorreo.setText("Correo");
 
-        lblRol.setText("Rol");
+        txtContrasenia.setBackground(new java.awt.Color(255, 255, 255));
+        txtContrasenia.setForeground(new java.awt.Color(0, 0, 0));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        txtUsuario.setBackground(new java.awt.Color(255, 255, 255));
+        txtUsuario.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtNombre.setBackground(new java.awt.Color(255, 255, 255));
+        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtCedula.setBackground(new java.awt.Color(255, 255, 255));
+        txtCedula.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtTelefono.setBackground(new java.awt.Color(255, 255, 255));
+        txtTelefono.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtCorreo.setBackground(new java.awt.Color(255, 255, 255));
+        txtCorreo.setForeground(new java.awt.Color(0, 0, 0));
+
+        btnRegistrar.setBackground(new java.awt.Color(0, 0, 102));
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI Historic", 1, 15)); // NOI18N
+        btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrar.setText("REGISTRAR");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+
+        btnBuscar.setBackground(new java.awt.Color(0, 0, 102));
+        btnBuscar.setFont(new java.awt.Font("Segoe UI Historic", 1, 15)); // NOI18N
+        btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
+        btnBuscar.setText("BUSCAR");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setBackground(new java.awt.Color(0, 0, 102));
+        btnEditar.setFont(new java.awt.Font("Segoe UI Historic", 1, 15)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setBackground(new java.awt.Color(0, 0, 102));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI Historic", 1, 15)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        tablaUsuarios.setBackground(new java.awt.Color(255, 255, 255));
+        tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaUsuariosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaUsuarios);
+
+        javax.swing.GroupLayout gestionUsuarioLayout = new javax.swing.GroupLayout(gestionUsuario);
+        gestionUsuario.setLayout(gestionUsuarioLayout);
+        gestionUsuarioLayout.setHorizontalGroup(
+            gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gestionUsuarioLayout.createSequentialGroup()
+                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gestionUsuarioLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jSeparator1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(117, 117, 117)
-                        .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 115, Short.MAX_VALUE)))
+                    .addGroup(gestionUsuarioLayout.createSequentialGroup()
+                        .addGap(102, 102, 102)
+                        .addComponent(btnRegistrar)
+                        .addGap(50, 50, 50)
+                        .addComponent(btnBuscar)
+                        .addGap(46, 46, 46)
+                        .addComponent(btnEditar)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnEliminar)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblRol)
-                    .addComponent(lblCorreo)
-                    .addComponent(lblTelefono)
-                    .addComponent(lblCedula)
-                    .addComponent(lblNombre)
+            .addGroup(gestionUsuarioLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblContrasenia)
                     .addComponent(lblUsuario)
-                    .addComponent(lblContrasenia))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblNombre)
+                    .addComponent(lblCedula)
+                    .addComponent(lblTelefono)
+                    .addComponent(lblCorreo))
+                .addGap(41, 41, 41)
+                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gestionUsuarioLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(420, 420, 420))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        gestionUsuarioLayout.setVerticalGroup(
+            gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gestionUsuarioLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(lblRegistro)
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblContrasenia)
-                .addGap(18, 18, 18)
-                .addComponent(lblUsuario)
-                .addGap(18, 18, 18)
-                .addComponent(lblNombre)
-                .addGap(18, 18, 18)
-                .addComponent(lblCedula)
-                .addGap(18, 18, 18)
-                .addComponent(lblTelefono)
-                .addGap(18, 18, 18)
-                .addComponent(lblCorreo)
-                .addGap(18, 18, 18)
-                .addComponent(lblRol)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gestionUsuarioLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(gestionUsuarioLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblContrasenia)
+                                    .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(11, 11, 11)
+                                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblUsuario)
+                                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblNombre)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblCedula)
+                                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblTelefono)
+                                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblCorreo)
+                                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gestionUsuarioLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(108, 108, 108))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gestionUsuarioLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(gestionUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnRegistrar)
+                            .addComponent(btnBuscar)
+                            .addComponent(btnEditar)
+                            .addComponent(btnEliminar))
+                        .addGap(33, 33, 33))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(gestionUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(gestionUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        if(validarCampos()){
+            JOptionPane.showMessageDialog(null, "Ingrese todos los datos");
+            return;
+        }
+
+        String contrasenia = txtContrasenia.getText().trim();
+        String usuario1 = txtUsuario.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String cedula = txtCedula.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        String correo = txtCorreo.getText().trim();
+
+        try {
+            Usuario usuario = new Usuario(usuario1, contrasenia, nombre, cedula, telefono, correo, Rol.USUARIO);
+            controlador.registrarUsuario(usuario);
+            llenarTabla();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(null, "Usuario Registrado");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "No se pudo registrar el usuario");
+            System.err.println(ex);
+        }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String cedula = txtCedula.getText().trim();
+        
+        if (cedula.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese la cédula del usuario que desea buscar");
+            return;
+        }
+        
+        Usuario usuario = controlador.buscarUsuario(cedula);
+        
+        if (usuario != null) {
+            txtNombre.setText(usuario.getNombre());
+            txtTelefono.setText(usuario.getTelefono());
+            txtCorreo.setText(usuario.getCorreo());
+            txtUsuario.setText(usuario.getUsuario());
+            txtContrasenia.setText(usuario.getContrasenia());
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuario no encontrado");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        if(validarCampos()){
+            JOptionPane.showMessageDialog(null, "Ingrese todos los datos");
+            return;
+        }
+
+        String contrasenia = txtContrasenia.getText().trim();
+        String usuario2 = txtUsuario.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String cedula = txtCedula.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        String correo = txtCorreo.getText().trim();
+
+        Usuario usuario = new Usuario(usuario2, contrasenia, nombre, cedula, telefono, correo, Rol.ADMIN);
+        controlador.editarUsuario(usuario);
+        llenarTabla();
+        limpiarCampos();
+        JOptionPane.showMessageDialog(null, "Usuario editado exitosamente");
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        String cedula = txtCedula.getText().trim();
+        controlador.eliminarUsuario(cedula);
+        llenarTabla();
+        limpiarCampos();
+        JOptionPane.showMessageDialog(null, "Usuario eliminado");
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
+        int seleccion = tablaUsuarios.getSelectedRow();
+        
+        txtCedula.setText(tablaUsuarios.getValueAt(seleccion, 0).toString());
+        txtNombre.setText(tablaUsuarios.getValueAt(seleccion, 1).toString());
+        txtTelefono.setText(tablaUsuarios.getValueAt(seleccion, 2).toString());
+        txtCorreo.setText(tablaUsuarios.getValueAt(seleccion, 3).toString());
+        txtUsuario.setText(tablaUsuarios.getValueAt(seleccion, 4).toString());
+        txtContrasenia.setText(tablaUsuarios.getValueAt(seleccion, 5).toString());
+        
+    }//GEN-LAST:event_tablaUsuariosMouseClicked
+    private void limpiarCampos() {
+        txtContrasenia.setText("");
+        txtUsuario.setText("");
+        txtNombre.setText("");
+        txtCedula.setText("");
+        txtTelefono.setText("");
+        txtCorreo.setText("");
+    }
+    
+    private boolean validarCampos(){
+        return (txtCedula.getText().isEmpty() || txtNombre.getText().isEmpty() || txtTelefono.getText().isEmpty() 
+                || txtCorreo.getText().isEmpty() || txtUsuario.getText().isEmpty() || txtContrasenia.getText().isEmpty());
+    }
+
+    private void llenarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        ArrayList<Usuario> usuarios = controlador.listarUsuarios();
+        modelo.setColumnIdentifiers(new Object[]{
+            "Cédula", "Nombre", "Teléfono", "Correo", "Rol", "Usuario", "Contraseña"
+        });
+
+        tablaUsuarios.setModel(modelo);
+
+        for (Usuario usuario : usuarios) {
+            modelo.addRow(new Object[]{
+                usuario.getCedula(),
+                usuario.getNombre(),
+                usuario.getTelefono(),
+                usuario.getCorreo(),
+                usuario.getRol(),
+                usuario.getUsuario(),
+                usuario.getContrasenia()
+            });
+        }
+
+    }
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaRegistro().setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JPanel gestionUsuario;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel lblCedula;
     private javax.swing.JLabel lblContrasenia;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblRegistro;
-    private javax.swing.JLabel lblRol;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblUsuario;
+    private javax.swing.JTable tablaUsuarios;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtContrasenia;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTelefono;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

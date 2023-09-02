@@ -17,7 +17,7 @@ import java.sql.SQLException;
  */
 public class ConexionBD {
     
-     private final String base = "proyectoFinalLibreria";
+     private final String base = "trabajo_final";
      private final String user = "root";
      private final String password = "";
      private final String url = "jdbc:mariadb://localhost:3306/" + base;
