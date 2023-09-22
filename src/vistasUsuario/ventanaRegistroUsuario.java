@@ -4,7 +4,7 @@
  */
 package vistasUsuario;
 
-import controladores.ControladorUsuario;
+import DAO.DAOUsuario;
 import enums.Rol;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -15,7 +15,7 @@ import modelos.Usuario;
  * @author Manuela Gomez
  */
 public class ventanaRegistroUsuario extends javax.swing.JFrame {
-    ControladorUsuario controlador;
+    DAOUsuario controlador;
 
     /**
      * Creates new form ventanaRegistroUsuario
@@ -23,7 +23,7 @@ public class ventanaRegistroUsuario extends javax.swing.JFrame {
     public ventanaRegistroUsuario() {
         initComponents();
         setLocationRelativeTo(this);
-        controlador = new ControladorUsuario();
+        controlador = new DAOUsuario();
     }
 
     

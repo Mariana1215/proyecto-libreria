@@ -10,18 +10,22 @@ import java.sql.Date;
  *
  * @author LENOVO
  */
-public class Devolucion {
-    
+public class Prestamo {
+    private Usuario usuario;
     private Libro libro;
+    private Date fechaPrestamo;
+    private Date fechaLimite;
     private Date fechaDevolucion;
     private boolean devuelto;
-    private Usuario usuario;
 
-    public Devolucion(Libro libro, Date fechaDevolucion, boolean devuelto, Usuario usuario) {
+
+    public Prestamo(Libro libro,Usuario usuario,Date fechaPrestamo, Date fechaLimite) {
         this.libro = libro;
-        this.fechaDevolucion = fechaDevolucion;
-        this.devuelto = devuelto;
         this.usuario = usuario;
+        this.fechaPrestamo = fechaPrestamo;
+        this.fechaLimite = fechaLimite;
+        fechaDevolucion = null;
+        devuelto = false;
     }
 
     public Libro getLibro() {
@@ -54,6 +58,22 @@ public class Devolucion {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Date getFechaPrestamo() {
+        return fechaPrestamo;
+    }
+
+    public void setFechaPrestamo(Date fechaPrestamo) {
+        this.fechaPrestamo = fechaPrestamo;
+    }
+
+    public Date getFechaLimite() {
+        return fechaLimite;
+    }
+
+    public void setFechaLimite(Date fechaLimite) {
+        this.fechaLimite = fechaLimite;
     }
     
     

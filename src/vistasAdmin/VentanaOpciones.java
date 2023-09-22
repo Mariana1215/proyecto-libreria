@@ -31,6 +31,8 @@ public class VentanaOpciones extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         btnRegistroUsuario = new javax.swing.JButton();
+        btnGestionLibros = new javax.swing.JButton();
+        btnGestionGeneros = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,6 +57,25 @@ public class VentanaOpciones extends javax.swing.JFrame {
             }
         });
 
+        btnGestionLibros.setBackground(new java.awt.Color(0, 0, 102));
+        btnGestionLibros.setForeground(new java.awt.Color(255, 255, 255));
+        btnGestionLibros.setText("Gestión libros");
+        btnGestionLibros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionLibrosActionPerformed(evt);
+            }
+        });
+
+        btnGestionGeneros.setBackground(new java.awt.Color(0, 0, 102));
+        btnGestionGeneros.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        btnGestionGeneros.setForeground(new java.awt.Color(255, 255, 255));
+        btnGestionGeneros.setText("Gestión generos");
+        btnGestionGeneros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionGenerosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -68,8 +89,13 @@ public class VentanaOpciones extends javax.swing.JFrame {
                         .addGap(234, 234, 234)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(184, 184, 184)
-                        .addComponent(btnRegistroUsuario)))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGestionGeneros)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(btnGestionLibros)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -79,9 +105,13 @@ public class VentanaOpciones extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(137, 137, 137)
-                .addComponent(btnRegistroUsuario)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegistroUsuario)
+                    .addComponent(btnGestionLibros))
+                .addGap(29, 29, 29)
+                .addComponent(btnGestionGeneros)
+                .addContainerGap(278, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -106,12 +136,28 @@ public class VentanaOpciones extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnRegistroUsuarioActionPerformed
 
+    private void btnGestionLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionLibrosActionPerformed
+        // TODO add your handling code here:
+        VentanaRegistroLibros ventana = new VentanaRegistroLibros();
+        ventana.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnGestionLibrosActionPerformed
+
+    private void btnGestionGenerosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionGenerosActionPerformed
+        // TODO add your handling code here:
+        VentanaRegistroGenero ventana = new VentanaRegistroGenero();
+        ventana.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnGestionGenerosActionPerformed
+
     /**
      * @param args the command line arguments
      */
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGestionGeneros;
+    private javax.swing.JButton btnGestionLibros;
     private javax.swing.JButton btnRegistroUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

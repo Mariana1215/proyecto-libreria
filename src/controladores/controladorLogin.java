@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import modelos.ConexionBD;
+import conexion.ConexionBD;
 import modelos.Usuario;
 
 /**

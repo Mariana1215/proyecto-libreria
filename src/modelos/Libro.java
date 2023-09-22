@@ -9,14 +9,15 @@ package modelos;
  * @author Manuela Gomez
  */
 public class Libro {
-
+    private String ISBN;
     private String titulo;
     private String autor;
-    private String genero;
     private int anio;
     private int copias;
+    private Genero genero;
 
-    public Libro(String titulo, String autor, String genero, int anio, int copias) {
+    public Libro(String ISBN,String titulo, String autor, int anio, int copias, Genero genero) {
+        this.ISBN = ISBN;
         this.titulo = titulo;
         this.autor = autor;
         this.genero = genero;
@@ -32,10 +33,10 @@ public class Libro {
         return autor;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
-
+    
     public int getAnio() {
         return anio;
     }
@@ -47,5 +48,10 @@ public class Libro {
     public void setCopias(int copias) {
         this.copias = copias;
     }
+
+    public String getISBN() {
+        return ISBN;
+    }
+    
 
 }
