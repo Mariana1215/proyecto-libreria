@@ -4,7 +4,8 @@
  */
 package DAO;
 
-import conexion.ConexionBD;
+
+import conexion.Singleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,12 +18,11 @@ import modelos.Genero;
  * @author LENOVO
  */
 public class DAOGenero {
-    private final ConexionBD conn;
+
     private final Connection con;
 
     public DAOGenero() {
-        conn = new ConexionBD();
-        con = conn.getConexion();
+        con = Singleton.getInstancia().getConnection();
     }
     public ArrayList<Genero> listarGeneros() {
         ArrayList<Genero> generos = new ArrayList<>();

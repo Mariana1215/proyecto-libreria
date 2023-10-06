@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/controladores/ControladorLibro.java</file>
-            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/vistasAdmin/VentanaRegistroLibros.java</file>
-            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/vistasAdmin/VentanaRegistro.java</file>
-            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/vistasAdmin/VentanaOpciones.java</file>
-            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/DAO/DAOLibro.java</file>
-            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/DAO/DAOGenero.java</file>
+            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/controladores/ControladorPrestamo.java</file>
+            <file>file:/C:/Users/LENOVO/Documents/4%20semestre/Diseño%20de%20software/ProyectoFinalLibreria/ProyectoFinalLibreria/src/DAO/DAOPrestamo.java</file>
         </group>
     </open-files>
 </project-private>

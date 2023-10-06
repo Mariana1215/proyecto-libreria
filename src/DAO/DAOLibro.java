@@ -4,7 +4,8 @@
  */
 package DAO;
 
-import conexion.ConexionBD;
+
+import conexion.Singleton;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,12 +19,11 @@ import modelos.Libro;
  * @author LENOVO
  */
 public class DAOLibro {
-    private final ConexionBD conn;
+
     private final Connection con;
 
     public DAOLibro() {
-        conn = new ConexionBD();
-        con = conn.getConexion();
+        con = Singleton.getInstancia().getConnection();
     }
      public Libro buscarLibro(String isbn) {
         try{
@@ -45,7 +45,7 @@ public class DAOLibro {
                 int anio = rs.getInt("anio");
                 int copias = rs.getInt("copias");
                 int idGenero = rs.getInt("id_genero");
-                String nombreGenero = rs.getString("nombre_categoria");
+                String nombreGenero = rs.getString("nombre_genero");
                 
                 Genero genero = new Genero(idGenero, nombreGenero);
                 

@@ -7,6 +7,7 @@ package controladores;
 import DAO.DAOUsuario;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import modelos.Prestamo;
 import modelos.Usuario;
 
 /**
@@ -14,26 +15,32 @@ import modelos.Usuario;
  * @author LENOVO
  */
 public class ControladorUsuario {
-    DAOUsuario usuario;
+    DAOUsuario DAOUsuario;
 
     public ControladorUsuario() {
-        this.usuario = usuario;
+        this.DAOUsuario = new DAOUsuario();
     }
     
     
     public Usuario buscarUsuario(String cedula){
-        return usuario.buscarUsuario(cedula);
+        return DAOUsuario.buscarUsuario(cedula);
     }
     public void registrarUsuario(Usuario u) throws SQLException{
-        usuario.registrarUsuario(u);
+        DAOUsuario.registrarUsuario(u);
     }
     public void editarUsuario(Usuario u){
-        usuario.editarUsuario(u);
+        DAOUsuario.editarUsuario(u);
     }
      public void eliminarUsuario(String cedula){
-         usuario.eliminarUsuario(cedula);
+         DAOUsuario.eliminarUsuario(cedula);
      }
      public ArrayList<Usuario> listarUsuarios(){
-         return usuario.listarUsuarios();
+         return DAOUsuario.listarUsuarios();
+     }
+     public void solicitarPrestamo(Prestamo prestamo){
+         DAOUsuario.solicitarPrestamo(prestamo);
+     }
+     public void delvoverPrestamo(Prestamo prestamo){
+         DAOUsuario.delvoverPrestamo(prestamo);
      }
 }

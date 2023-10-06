@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package vistasUsuario;
+package vistaLogin;
 
 import controladores.ControladorLogin;
 import enums.Rol;
@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import modelos.Usuario;
 import vistasAdmin.VentanaOpciones;
 import vistasAdmin.VentanaRegistro;
+import vistasUsuario.VentanaOpcionesUsuario;
+import vistasUsuario.ventanaRegistroUsuario;
 
 /**
  *
@@ -194,7 +196,8 @@ public class ventanaLogin extends javax.swing.JFrame {
                 new VentanaOpciones().setVisible(true);
                 this.dispose();
             } else if (usuario.getRol().equals(Rol.USUARIO)) {
-                System.out.println("Bienvenido usuario");
+                new VentanaOpcionesUsuario(usuario).setVisible(true);
+                this.dispose();    
             }
         } else {
             JOptionPane.showMessageDialog(null, "Usuario o contraseña erroneos");

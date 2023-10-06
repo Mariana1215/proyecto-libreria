@@ -4,11 +4,14 @@
  */
 package vistasAdmin;
 
+import modelos.Usuario;
+
 /**
  *
  * @author LENOVO
  */
 public class VentanaOpciones extends javax.swing.JFrame {
+    Usuario admin;
 
     /**
      * Creates new form VentanaOpciones
@@ -33,6 +36,7 @@ public class VentanaOpciones extends javax.swing.JFrame {
         btnRegistroUsuario = new javax.swing.JButton();
         btnGestionLibros = new javax.swing.JButton();
         btnGestionGeneros = new javax.swing.JButton();
+        btnHistorial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,9 +52,9 @@ public class VentanaOpciones extends javax.swing.JFrame {
         jLabel1.setText("OPCIONES");
 
         btnRegistroUsuario.setBackground(new java.awt.Color(0, 0, 102));
-        btnRegistroUsuario.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        btnRegistroUsuario.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         btnRegistroUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegistroUsuario.setText("Gestión Usuarios");
+        btnRegistroUsuario.setText("GESTIÓN USUARIOS");
         btnRegistroUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistroUsuarioActionPerformed(evt);
@@ -58,8 +62,9 @@ public class VentanaOpciones extends javax.swing.JFrame {
         });
 
         btnGestionLibros.setBackground(new java.awt.Color(0, 0, 102));
+        btnGestionLibros.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         btnGestionLibros.setForeground(new java.awt.Color(255, 255, 255));
-        btnGestionLibros.setText("Gestión libros");
+        btnGestionLibros.setText("GESTIÓN LIBROS");
         btnGestionLibros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGestionLibrosActionPerformed(evt);
@@ -67,12 +72,22 @@ public class VentanaOpciones extends javax.swing.JFrame {
         });
 
         btnGestionGeneros.setBackground(new java.awt.Color(0, 0, 102));
-        btnGestionGeneros.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        btnGestionGeneros.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
         btnGestionGeneros.setForeground(new java.awt.Color(255, 255, 255));
-        btnGestionGeneros.setText("Gestión generos");
+        btnGestionGeneros.setText("GESTIÓN GENEROS");
         btnGestionGeneros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGestionGenerosActionPerformed(evt);
+            }
+        });
+
+        btnHistorial.setBackground(new java.awt.Color(0, 0, 102));
+        btnHistorial.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
+        btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
+        btnHistorial.setText("HISTORIAL PRESTAMO");
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistorialActionPerformed(evt);
             }
         });
 
@@ -81,9 +96,6 @@ public class VentanaOpciones extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(234, 234, 234)
@@ -91,12 +103,16 @@ public class VentanaOpciones extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGestionGeneros)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(btnGestionLibros)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnRegistroUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGestionGeneros))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGestionLibros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(80, 80, 80))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,9 +125,11 @@ public class VentanaOpciones extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegistroUsuario)
                     .addComponent(btnGestionLibros))
-                .addGap(29, 29, 29)
-                .addComponent(btnGestionGeneros)
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addGap(94, 94, 94)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGestionGeneros)
+                    .addComponent(btnHistorial))
+                .addContainerGap(213, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -150,6 +168,13 @@ public class VentanaOpciones extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnGestionGenerosActionPerformed
 
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
+        // TODO add your handling code here:
+        VentanaHistorialPrestamo ventana = new VentanaHistorialPrestamo(admin);
+        ventana.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnHistorialActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -158,6 +183,7 @@ public class VentanaOpciones extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGestionGeneros;
     private javax.swing.JButton btnGestionLibros;
+    private javax.swing.JButton btnHistorial;
     private javax.swing.JButton btnRegistroUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
