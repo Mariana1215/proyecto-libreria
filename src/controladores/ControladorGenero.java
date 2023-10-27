@@ -7,7 +7,7 @@ package controladores;
 import DAO.DAOGenero;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import modelos.Genero;
+
 
 /**
  *
@@ -21,24 +21,24 @@ public class ControladorGenero {
         this.DAOGenero = new DAOGenero();
     }
     
-    public ArrayList<Genero> listarGeneros() {
-        return DAOGenero.listarGeneros();
+    public ArrayList<Object> listarObjeto() {
+        return DAOGenero.listarObjeto();
     }
     
-    public Genero buscarGenero(String nombreGenero) {
-        return DAOGenero.buscarGenero(nombreGenero);
+    public Object buscarObject(Object object) {
+        return DAOGenero.buscarObjeto(object);
     }
     
-    public void agregarGenero(Genero genero) throws SQLException {
-        DAOGenero.agregarGenero(genero);
+    public void agregarObjeto(Object object) throws SQLException {
+        DAOGenero.agregarObjeto(object);
     }
     
-    public void editarGenero(int idGenero, String nombreGenero) throws SQLException {
-        DAOGenero.editarGenero(idGenero, nombreGenero);
+    public void editarObject(Object object) throws SQLException {
+        DAOGenero.editarObjeto(object);
     }
     
-    public boolean eliminarGenero(int idGenero) throws SQLException {
-        return DAOGenero.eliminarGenero(idGenero);
+    public boolean eliminarObjeto(Object object) throws SQLException {
+        return DAOGenero.eliminarObjeto(object);
     }
     
 }

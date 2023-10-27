@@ -246,7 +246,7 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ingrese todos los datos");
             return;
         }
-        Genero genero = controlador.buscarGenero(nombreGenero);
+        Genero genero = (Genero) controlador.buscarObject(nombreGenero);
         if(genero != null){
             JOptionPane.showMessageDialog(null, "Ya hay un genero con ese nombre");
             return;
@@ -254,7 +254,7 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
         
         try{
             Genero genero1 = new Genero(nombreGenero);
-            controlador.agregarGenero(genero1);
+            controlador.agregarObjeto(genero1);
             JOptionPane.showMessageDialog(null, "Genero registrado correctamente");
             llenarTabla();
             limpiarCampos();
@@ -276,7 +276,9 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
             int idGenero = (int) tablaGeneros.getModel().getValueAt(selec, 0);
             
             try{
-                controlador.editarGenero(idGenero, nombreGenero);
+                Genero genero = new Genero(idGenero, nombreGenero);
+                
+                controlador.editarObject(genero);
                 JOptionPane.showMessageDialog(null, "Genero editado correctamente");
                 llenarTabla();
                 limpiarCampos();
@@ -294,7 +296,7 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
             int idGenero = (int) tablaGeneros.getModel().getValueAt(selec, 0);
             
             try{
-                controlador.eliminarGenero(idGenero);
+                controlador.eliminarObjeto(idGenero);
                 llenarTabla();
                 JOptionPane.showMessageDialog(null, "Genero eliminado correctamente");
                 limpiarCampos();
@@ -329,7 +331,7 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
     private void llenarTabla(){
         DefaultTableModel modelo = new DefaultTableModel();
         
-        ArrayList<Genero> generos = controlador.listarGeneros();
+        ArrayList<Object> generos = controlador.listarObjeto();
         
         modelo.setColumnIdentifiers(new Object[]{
             "ID genero", "Nombre genero"
@@ -339,7 +341,8 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
         sorter = new TableRowSorter<>(modelo);
         tablaGeneros.setRowSorter(sorter);
         
-        for(Genero genero : generos){
+        for (int i = 0; i < generos.size(); i++) {
+           Genero genero = (Genero) generos.get(i);
             modelo.addRow(new Object[]{
                 genero.getIdGenero(),
                 genero.getNombreGenero()
@@ -366,37 +369,7 @@ public class VentanaRegistroGenero extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistroGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistroGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistroGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaRegistroGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaRegistroGenero().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;

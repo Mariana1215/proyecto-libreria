@@ -122,7 +122,7 @@ public class VentanaListadoPrestamo extends javax.swing.JFrame {
         if (selec >= 0) {
             int idPrestamo = (int) tablaPrestamo.getModel().getValueAt(selec, 0);
             Prestamo prestamo = controlador.seleccionarPrestamo(idPrestamo);
-            controlador.delvoverPrestamo(prestamo);
+            controlador.devolverPrestamo(prestamo);
             llenarTabla();
             JOptionPane.showMessageDialog(null, "Devolucion realizada");
 

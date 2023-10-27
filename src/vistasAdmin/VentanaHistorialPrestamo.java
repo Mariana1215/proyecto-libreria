@@ -9,39 +9,39 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import modelos.Prestamo;
 import modelos.Usuario;
+import vistasPdf.VentanaGeneral;
+import vistasPdf.VentanaReporteFecha;
+import vistasPdf.VentanaReporteUsuario;
+import vistasPdf.VentanaReporteUsuarioFecha;
 
 /**
  *
  * @author LENOVO
  */
 public class VentanaHistorialPrestamo extends javax.swing.JFrame {
-    
-    Usuario admin;
-    
+
     ControladorPrestamo controlador;
-    
 
     /**
      * Creates new form VentanaHistorialPrestamo
      */
-    public VentanaHistorialPrestamo(Usuario admin) {
+    public VentanaHistorialPrestamo() {
         initComponents();
-        this.admin = admin;
         setLocationRelativeTo(this);
         controlador = new ControladorPrestamo();
         llenarTabla();
     }
-    
-    private void llenarTabla(){
+
+    private void llenarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
-        
+
         ArrayList<Prestamo> prestamos = controlador.listarTodosPrestamos();
         modelo.setColumnIdentifiers(new Object[]{
             "Cedula usuario", "Usuario", "ISBN", "Título", "Cantidad", "Fecha prestamo", "Fecha Vencimiento"
         });
         tablaHistorial.setModel(modelo);
-        
-        for(Prestamo prestamo : prestamos){
+
+        for (Prestamo prestamo : prestamos) {
             modelo.addRow(new Object[]{
                 prestamo.getUsuario().getCedula(),
                 prestamo.getUsuario().getNombre(),
@@ -52,8 +52,7 @@ public class VentanaHistorialPrestamo extends javax.swing.JFrame {
                 prestamo.getFechaLimite()
             });
         }
-        
-        
+
     }
 
     /**
@@ -68,6 +67,8 @@ public class VentanaHistorialPrestamo extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaHistorial = new javax.swing.JTable();
+        cbxOpcionesReportes = new javax.swing.JComboBox<>();
+        btnReporte = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,21 +87,48 @@ public class VentanaHistorialPrestamo extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaHistorial);
 
+        cbxOpcionesReportes.setBackground(new java.awt.Color(255, 255, 255));
+        cbxOpcionesReportes.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        cbxOpcionesReportes.setForeground(new java.awt.Color(0, 0, 0));
+        cbxOpcionesReportes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opcion", "Fecha", "Usuario", "Fecha y usuario", "General", "Retrasos" }));
+
+        btnReporte.setBackground(new java.awt.Color(0, 0, 102));
+        btnReporte.setFont(new java.awt.Font("Segoe UI Historic", 1, 15)); // NOI18N
+        btnReporte.setForeground(new java.awt.Color(255, 255, 255));
+        btnReporte.setText("REALIZAR REPORTE");
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 916, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(cbxOpcionesReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnReporte)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 756, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(cbxOpcionesReportes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnReporte)
+                        .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -117,12 +145,34 @@ public class VentanaHistorialPrestamo extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        // TODO add your handling code here:
+        switch (cbxOpcionesReportes.getSelectedIndex()) {
+            case 1:
+                new VentanaReporteFecha().setVisible(true);
+                this.dispose();
+                break;
+            case 2:
+                new VentanaReporteUsuario().setVisible(true);
+                this.dispose();
+                break;
+            case 3:
+                new VentanaReporteUsuarioFecha().setVisible(true);
+                break;
+            case 4:
+                new VentanaGeneral().setVisible(true);
+                this.dispose();
+                break;
+        }
+    }//GEN-LAST:event_btnReporteActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnReporte;
+    private javax.swing.JComboBox<String> cbxOpcionesReportes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaHistorial;

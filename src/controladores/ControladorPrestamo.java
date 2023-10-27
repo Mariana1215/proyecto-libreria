@@ -36,8 +36,8 @@ public class ControladorPrestamo {
     public void solicitarPrestamo(Prestamo prestamo){
         DAOUsuario.solicitarPrestamo(prestamo);
     }
-    public void delvoverPrestamo(Prestamo prestamo){
-        DAOUsuario.delvoverPrestamo(prestamo);
+    public void devolverPrestamo(Prestamo prestamo){
+        DAOUsuario.devolverPrestamo(prestamo);
     }
      public boolean prestamoVencido(Usuario usuario){
          return DAOUsuario.prestamoVencido(usuario);

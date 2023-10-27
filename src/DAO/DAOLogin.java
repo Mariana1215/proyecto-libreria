@@ -6,6 +6,7 @@ package DAO;
 
 import conexion.Singleton;
 import enums.Rol;
+import interfarces.DAOLoginInterfaz;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import modelos.Usuario;
  *
  * @author LENOVO
  */
-public class DAOLogin {
+public class DAOLogin implements DAOLoginInterfaz {
     private final Connection con;
 
     public DAOLogin() {
@@ -26,7 +27,7 @@ public class DAOLogin {
     
     
     
-   
+    @Override
     public Usuario buscarUsuario(String usuario, String contrasenia) {
 
         try {

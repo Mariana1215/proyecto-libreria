@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import conexion.Singleton;
 import excepciones.CantidadException;
 import excepciones.PrestamoVencidoException;
+import excepciones.UsuarioYaRegistradoException;
+import interfarces.DAOUsuarioInterfaz;
+import interfarces.DaoInterfaz;
 import java.time.LocalDate;
 import java.util.Date;
+import modelos.Devolucion;
 import modelos.Libro;
 import modelos.Prestamo;
 import modelos.Usuario;
@@ -23,56 +27,61 @@ import modelos.Usuario;
  *
  * @author Manuela Gomez
  */
-public class DAOUsuario {
-   
+public class DAOUsuario implements DaoInterfaz, DAOUsuarioInterfaz {
 
     private final Connection con;
+    DAODevolucion daoDevolucion;
 
     public DAOUsuario() {
-       con = Singleton.getInstancia().getConnection();
+        con = Singleton.getInstancia().getConnection();
+        daoDevolucion = new DAODevolucion();
     }
 
-    public Usuario buscarUsuario(String cedula) {
-        try{
-            PreparedStatement ps;
+    @Override
+    public Object buscarObjeto(Object object) {
+        String query = "SELECT * FROM usuarios WHERE cedula = ?";
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
+
             ResultSet rs;
-            
-            String query = "SELECT * FROM usuarios WHERE cedula = ?";
-            
-            ps = con.prepareStatement(query);
+
+            String cedula = (String) object;
+
             ps.setString(1, cedula);
-            
+
             rs = ps.executeQuery();
-            
-            if(rs.next()){ //Si se encuentra algo
-                
+
+            if (rs.next()) { //Si se encuentra algo
+
                 String nombre = rs.getString("nombre");
                 String telefono = rs.getString("telefono");
                 String correo = rs.getString("correo");
                 String usuario1 = rs.getString("usuario");
                 String contrasenia = rs.getString("contrasenia");
                 Rol rol = Rol.valueOf(rs.getString("rol"));
-                
+
                 Usuario usuario = new Usuario(usuario1, contrasenia, nombre, cedula, telefono, correo, rol);
                 return usuario;
-                        
-                
+
             }
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
         return null;
 
     }
 
-    public void registrarUsuario(Usuario usuario) throws SQLException {
+    @Override
+    public void agregarObjeto(Object object) {
+        Usuario usuario = (Usuario) object;
+        
+        Object aux = buscarObjeto(usuario.getCedula());
+        
+        if (aux != null) {
+            throw new UsuarioYaRegistradoException();
+        }
 
-        try {
-
-            PreparedStatement ps;
-
-            String query = "INSERT INTO usuarios (contrasenia, usuario, nombre, cedula, telefono, correo, rol) VALUES (?,?,?,?,?,?,?)";
-            ps = con.prepareStatement(query);
+        String query = "INSERT INTO usuarios (contrasenia, usuario, nombre, cedula, telefono, correo, rol) VALUES (?,?,?,?,?,?,?)";
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, usuario.getContrasenia());
             ps.setString(2, usuario.getUsuario());
@@ -86,18 +95,16 @@ public class DAOUsuario {
 
         } catch (SQLException ex) {
             System.err.println(ex);
-            throw new SQLException();
         }
 
     }
 
-    public void editarUsuario(Usuario usuario) {
+    @Override
+    public void editarObjeto(Object object) {
+        String query = ("UPDATE usuarios SET contrasenia=?, usuario=?, nombre=?, telefono=?, correo=?  WHERE cedula=?");
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
 
-        try {
-            PreparedStatement ps;
-
-            String query = ("UPDATE usuarios SET contrasenia=?, usuario=?, nombre=?, telefono=?, correo=?  WHERE cedula=?");
-            ps = con.prepareStatement(query);
+            Usuario usuario = (Usuario) object;
 
             ps.setString(1, usuario.getContrasenia());
             ps.setString(2, usuario.getUsuario());
@@ -105,7 +112,7 @@ public class DAOUsuario {
             ps.setString(4, usuario.getTelefono());
             ps.setString(5, usuario.getCorreo());
             ps.setString(6, usuario.getCedula());
-            
+
             ps.execute();
 
         } catch (SQLException ex) {
@@ -114,34 +121,38 @@ public class DAOUsuario {
         }
     }
 
-    public void eliminarUsuario(String cedula) {
-        try {
-            PreparedStatement ps;
+    @Override
+    public boolean eliminarObjeto(Object object) {
+        String query = "DELETE FROM usuarios WHERE cedula = ?";
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
 
-            String query = "DELETE FROM usuarios WHERE cedula = ?";
+            String cedula = (String) object;
 
-            ps = con.prepareStatement(query);
             ps.setString(1, cedula);
 
-            ps.execute();
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
 
         } catch (SQLException ex) {
             System.err.println(ex);
         }
+        return false;
     }
-    public ArrayList<Usuario> listarUsuarios(){
-        ArrayList<Usuario> usuarios = new ArrayList<>();
-        
-        try{
+
+    @Override
+    public ArrayList<Object> listarObjeto() {
+        ArrayList<Object> usuarios = new ArrayList<>();
+
+        try {
             PreparedStatement ps;
             ResultSet rs;
-            
+
             String query = "SELECT * FROM usuarios";
-            
+
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
-            
-            while (rs.next()){
+
+            while (rs.next()) {
                 String nombre = rs.getString("nombre");
                 String cedula = rs.getString("cedula");
                 String telefono = rs.getString("telefono");
@@ -149,31 +160,32 @@ public class DAOUsuario {
                 String usuario1 = rs.getString("usuario");
                 String contrasenia = rs.getString("contrasenia");
                 Rol rol = Rol.valueOf(rs.getString("rol"));
-                
+
                 Usuario usuario = new Usuario(usuario1, contrasenia, nombre, cedula, telefono, correo, rol);
                 usuarios.add(usuario);
             }
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
         return usuarios;
     }
-    
-    public void solicitarPrestamo(Prestamo prestamo){
+
+    @Override
+    public void solicitarPrestamo(Prestamo prestamo) throws CantidadException, PrestamoVencidoException {
         String query = "INSERT INTO prestamos( cedula_usuario, isbn_libro, cantidad_libros, fecha_prestamo, fecha_limite, fecha_devolucion, devuelto) VALUES"
                 + "(?,?,?,?,?,?,?)";
-        
-        try(PreparedStatement ps = con.prepareStatement(query)){
+
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
             Usuario usuario = prestamo.getUsuario();
-            
-            if(!copiasDisponibles(prestamo.getLibro(), prestamo.getCantidadLibro())){
+
+            if (!copiasDisponibles(prestamo.getLibro(), prestamo.getCantidadLibro())) {
                 throw new CantidadException();
             }
-            
-            if(prestamoVencido(usuario)){
+
+            if (prestamoVencido(usuario)) {
                 throw new PrestamoVencidoException();
             }
-            
+
             ps.setString(1, prestamo.getUsuario().getCedula());
             ps.setString(2, prestamo.getLibro().getISBN());
             ps.setInt(3, prestamo.getCantidadLibro());
@@ -181,88 +193,95 @@ public class DAOUsuario {
             ps.setDate(5, java.sql.Date.valueOf(prestamo.getFechaLimite()));
             ps.setDate(6, null);
             ps.setBoolean(7, false);
-            
+
             ps.executeUpdate();
-            
-            eliminarCopiaDisponible(prestamo.getLibro().getISBN(), prestamo.getCantidadLibro());         
-        
-        }catch (SQLException ex){
+
+            eliminarCopiaDisponible(prestamo.getLibro().getISBN(), prestamo.getCantidadLibro());
+
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
-        
+
     }
-    
-    public void delvoverPrestamo(Prestamo prestamo){
+
+    @Override
+    public void devolverPrestamo(Prestamo prestamo) {
         String query = "DELETE FROM prestamos WHERE id_prestamo = ?";
-        
-        try(PreparedStatement ps = con.prepareStatement(query)){
+
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, prestamo.getId());
             ps.executeUpdate();
             sumarCopiasDisponible(prestamo.getLibro().getISBN(), prestamo.getCantidadLibro());
-        }catch (SQLException ex){
+            
+            Devolucion devolucion = new Devolucion(prestamo.getUsuario(), prestamo.getLibro());
+            
+            daoDevolucion.agregarObjeto(devolucion);
+            
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
-        
+
     }
-    
-    private boolean copiasDisponibles(Libro libro, int cantidadLibro){
+
+    private boolean copiasDisponibles(Libro libro, int cantidadLibro) {
         Libro l = obtenerLibro(libro.getISBN());
-        
-        if(l != null){
-            if (cantidadLibro <= libro.getCopias()){
+
+        if (l != null) {
+            if (cantidadLibro <= libro.getCopias()) {
                 return true;
             }
         }
         return false;
     }
-    
-    public boolean prestamoVencido(Usuario usuario){
+
+    public boolean prestamoVencido(Usuario usuario) {
         String query = "SELECT * FROM prestamos WHERE cedula_usuario = ? AND devuelto = false and fecha_limite < ?";
-        try(PreparedStatement ps = con.prepareStatement(query)){
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, usuario.getCedula());
             Date fechaActual = new Date();
             ps.setDate(2, new java.sql.Date(fechaActual.getTime()));
             ResultSet rs = ps.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 return true;
             }
-            
-        }catch (SQLException ex){
+
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
         return false;
     }
-    
-    private void eliminarCopiaDisponible(String isbn, int cantidad){
+
+    private void eliminarCopiaDisponible(String isbn, int cantidad) {
         String query = "UPDATE libros SET copias = copias - ? WHERE isbn = ?";
-        
-        try(PreparedStatement ps = con.prepareStatement(query)){
-            
+
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
+
             ps.setInt(1, cantidad);
             ps.setString(2, isbn);
             ps.executeUpdate();
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
     }
-    private void sumarCopiasDisponible(String isbn, int cantidad){
+
+    private void sumarCopiasDisponible(String isbn, int cantidad) {
         String query = "UPDATE libros SET copias = copias + ? WHERE isbn = ?";
-        
-        try(PreparedStatement ps = con.prepareStatement(query)){
-            
+
+        try ( PreparedStatement ps = con.prepareStatement(query)) {
+
             ps.setInt(1, cantidad);
             ps.setString(2, isbn);
             ps.executeUpdate();
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
     }
-    
-    private Libro obtenerLibro(String isbn){
+
+    private Libro obtenerLibro(String isbn) {
         DAOLibro daoLibro = new DAOLibro();
-        return daoLibro.buscarLibro(isbn);
-        
+        return (Libro) daoLibro.buscarObjeto(isbn);
+
     }
-    
+
 }

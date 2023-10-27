@@ -41,7 +41,7 @@ public class VentanaListadoLibros extends javax.swing.JFrame {
     private final void llenarTabla(){
         DefaultTableModel modelo = new DefaultTableModel();
         
-        ArrayList<Libro> libros = controlador.listarLibros();
+        ArrayList<Object> libros = controlador.listarObject();
         modelo.setColumnIdentifiers(new Object[]{
             "ISBN", "Titulo", "Autor", "Genero", "Año publicacion"
         });
@@ -51,7 +51,8 @@ public class VentanaListadoLibros extends javax.swing.JFrame {
         sorter = new TableRowSorter<>(modelo);
         tablaLibros.setRowSorter(sorter);
         
-        for(Libro libro : libros){
+        for (int i = 0; i < libros.size(); i++) {
+            Libro libro = (Libro) libros.get(i);
             modelo.addRow(new Object[]{
                 libro.getISBN(),
                 libro.getTitulo(),
@@ -187,7 +188,7 @@ public class VentanaListadoLibros extends javax.swing.JFrame {
         
         if(selec >= 0){
             String isbn = tablaLibros.getModel().getValueAt(selec, 0).toString();
-            Libro libro = controlador.buscarLibro(isbn);
+            Libro libro = (Libro) controlador.buscarObjeto(isbn);
             
             if (libro != null){
                 new VentanaPrestamo(usuario, libro).setVisible(true);

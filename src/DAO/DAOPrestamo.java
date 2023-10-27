@@ -5,6 +5,7 @@
 package DAO;
 
 import conexion.Singleton;
+import interfarces.DAOPrestamosInterfaz;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,14 +20,14 @@ import modelos.Usuario;
  *
  * @author LENOVO
  */
-public class DAOPrestamo {
+public class DAOPrestamo implements DAOPrestamosInterfaz {
     
     private final Connection conn;
 
     public DAOPrestamo() {
         conn = Singleton.getInstancia().getConnection();
     }
-    
+    @Override
     public ArrayList<Prestamo> listarTodosPrestamos(){
         ArrayList<Prestamo> prestamos = new ArrayList<>();
         
@@ -57,6 +58,7 @@ public class DAOPrestamo {
         }
         return prestamos;
     }
+    @Override
     public ArrayList<Prestamo> listarUsuarioPrestamo(Usuario usuario){
         ArrayList<Prestamo> prestamos = new ArrayList<>();
         
@@ -85,7 +87,7 @@ public class DAOPrestamo {
         }
         return prestamos;
     }
-    
+    @Override
     public Prestamo seleccionarPrestamo(int id){
         String query = "SELECT * FROM prestamos WHERE id_prestamo = ?";
         
@@ -117,11 +119,11 @@ public class DAOPrestamo {
     
     private Usuario obtenerUsuario(String id){
         DAOUsuario daoUsuario = new DAOUsuario();
-        return daoUsuario.buscarUsuario(id);
+        return (Usuario) daoUsuario.buscarObjeto(id);
     }
     private Libro obtenerLibro(String isbn){
         DAOLibro daoLibro = new DAOLibro();
-        return daoLibro.buscarLibro(isbn);
+        return (Libro) daoLibro.buscarObjeto(isbn);
         
     }
     

@@ -22,25 +22,25 @@ public class ControladorUsuario {
     }
     
     
-    public Usuario buscarUsuario(String cedula){
-        return DAOUsuario.buscarUsuario(cedula);
+    public Object buscarObjeto(Object object){
+        return DAOUsuario.buscarObjeto(object);
     }
-    public void registrarUsuario(Usuario u) throws SQLException{
-        DAOUsuario.registrarUsuario(u);
+    public void agregarObjeto(Object object){
+        DAOUsuario.agregarObjeto(object);
     }
-    public void editarUsuario(Usuario u){
-        DAOUsuario.editarUsuario(u);
+    public void editarObjeto(Object object){
+        DAOUsuario.editarObjeto(object);
     }
-     public void eliminarUsuario(String cedula){
-         DAOUsuario.eliminarUsuario(cedula);
+     public void eliminarObjeto(Object object){
+         DAOUsuario.eliminarObjeto(object);
      }
-     public ArrayList<Usuario> listarUsuarios(){
-         return DAOUsuario.listarUsuarios();
+     public ArrayList<Object> listarObjectos(){
+         return DAOUsuario.listarObjeto();
      }
      public void solicitarPrestamo(Prestamo prestamo){
          DAOUsuario.solicitarPrestamo(prestamo);
      }
-     public void delvoverPrestamo(Prestamo prestamo){
-         DAOUsuario.delvoverPrestamo(prestamo);
+     public void devolverPrestamo(Prestamo prestamo){
+         DAOUsuario.devolverPrestamo(prestamo);
      }
 }

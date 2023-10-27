@@ -6,6 +6,7 @@ package vistasAdmin;
 
 import controladores.ControladorUsuario;
 import enums.Rol;
+import excepciones.UsuarioYaRegistradoException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -287,7 +288,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        if(validarCampos()){
+        if (validarCampos()) {
             JOptionPane.showMessageDialog(null, "Ingrese todos los datos");
             return;
         }
@@ -300,28 +301,28 @@ public class VentanaRegistro extends javax.swing.JFrame {
         String correo = txtCorreo.getText().trim();
 
         try {
+
             Usuario usuario = new Usuario(usuario1, contrasenia, nombre, cedula, telefono, correo, Rol.USUARIO);
-            controlador.registrarUsuario(usuario);
+            controlador.agregarObjeto(usuario);
             llenarTabla();
             limpiarCampos();
             JOptionPane.showMessageDialog(null, "Usuario Registrado");
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "No se pudo registrar el usuario");
-            System.err.println(ex);
+        } catch (UsuarioYaRegistradoException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String cedula = txtCedula.getText().trim();
-        
+
         if (cedula.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese la cédula del usuario que desea buscar");
             return;
         }
-        
-        Usuario usuario = controlador.buscarUsuario(cedula);
-        
+
+        Usuario usuario = (Usuario) controlador.buscarObjeto(cedula);
+
         if (usuario != null) {
             txtNombre.setText(usuario.getNombre());
             txtTelefono.setText(usuario.getTelefono());
@@ -334,7 +335,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if(validarCampos()){
+        if (validarCampos()) {
             JOptionPane.showMessageDialog(null, "Ingrese todos los datos");
             return;
         }
@@ -347,7 +348,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
         String correo = txtCorreo.getText().trim();
 
         Usuario usuario = new Usuario(usuario2, contrasenia, nombre, cedula, telefono, correo, Rol.ADMIN);
-        controlador.editarUsuario(usuario);
+        controlador.editarObjeto(usuario);
         llenarTabla();
         limpiarCampos();
         JOptionPane.showMessageDialog(null, "Usuario editado exitosamente");
@@ -356,7 +357,7 @@ public class VentanaRegistro extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         String cedula = txtCedula.getText().trim();
-        controlador.eliminarUsuario(cedula);
+        controlador.eliminarObjeto(cedula);
         llenarTabla();
         limpiarCampos();
         JOptionPane.showMessageDialog(null, "Usuario eliminado");
@@ -364,14 +365,14 @@ public class VentanaRegistro extends javax.swing.JFrame {
 
     private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
         int seleccion = tablaUsuarios.getSelectedRow();
-        
+
         txtCedula.setText(tablaUsuarios.getValueAt(seleccion, 0).toString());
         txtNombre.setText(tablaUsuarios.getValueAt(seleccion, 1).toString());
         txtTelefono.setText(tablaUsuarios.getValueAt(seleccion, 2).toString());
         txtCorreo.setText(tablaUsuarios.getValueAt(seleccion, 3).toString());
         txtUsuario.setText(tablaUsuarios.getValueAt(seleccion, 4).toString());
         txtContrasenia.setText(tablaUsuarios.getValueAt(seleccion, 5).toString());
-        
+
     }//GEN-LAST:event_tablaUsuariosMouseClicked
     private void limpiarCampos() {
         txtContrasenia.setText("");
@@ -381,23 +382,24 @@ public class VentanaRegistro extends javax.swing.JFrame {
         txtTelefono.setText("");
         txtCorreo.setText("");
     }
-    
-    private boolean validarCampos(){
-        return (txtCedula.getText().isEmpty() || txtNombre.getText().isEmpty() || txtTelefono.getText().isEmpty() 
+
+    private boolean validarCampos() {
+        return (txtCedula.getText().isEmpty() || txtNombre.getText().isEmpty() || txtTelefono.getText().isEmpty()
                 || txtCorreo.getText().isEmpty() || txtUsuario.getText().isEmpty() || txtContrasenia.getText().isEmpty());
     }
 
     private void llenarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
 
-        ArrayList<Usuario> usuarios = controlador.listarUsuarios();
+        ArrayList<Object> usuarios = controlador.listarObjectos();
         modelo.setColumnIdentifiers(new Object[]{
             "Cédula", "Nombre", "Teléfono", "Correo", "Rol", "Usuario", "Contraseña"
         });
 
         tablaUsuarios.setModel(modelo);
 
-        for (Usuario usuario : usuarios) {
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuario usuario = (Usuario) usuarios.get(i);
             modelo.addRow(new Object[]{
                 usuario.getCedula(),
                 usuario.getNombre(),
@@ -407,14 +409,13 @@ public class VentanaRegistro extends javax.swing.JFrame {
                 usuario.getUsuario(),
                 usuario.getContrasenia()
             });
-        }
 
+        }
     }
 
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

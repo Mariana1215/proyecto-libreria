@@ -6,6 +6,7 @@ package DAO;
 
 
 import conexion.Singleton;
+import interfarces.DaoInterfaz;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,24 +19,23 @@ import modelos.Libro;
  *
  * @author LENOVO
  */
-public class DAOLibro {
+public class DAOLibro implements DaoInterfaz {
 
     private final Connection con;
 
     public DAOLibro() {
         con = Singleton.getInstancia().getConnection();
     }
-     public Libro buscarLibro(String isbn) {
-        try{
-            PreparedStatement ps;
+    @Override
+     public Object buscarObjeto(Object object) {
+         String query = "SELECT libros.ISBN, libros.titulo, libros.autor, libros.id_genero, libros.anio, libros.copias,"
+                    + "generos.nombre_genero FROM libros JOIN generos ON libros.id_genero = generos.id_genero WHERE libros.ISBN = ?";
+        try(PreparedStatement ps = con.prepareStatement(query)){
+            
             ResultSet rs;
             
-            String query = "SELECT libros.ISBN, libros.titulo, libros.autor, libros.id_genero, libros.anio, libros.copias,"
-                    + "generos.nombre_genero FROM libros JOIN generos ON libros.id_genero = generos.id_genero WHERE libros.ISBN = ?";
-            
-            ps = con.prepareStatement(query);
+            String isbn = (String) object;
             ps.setString(1, isbn);
-            
             rs = ps.executeQuery();
             
             if(rs.next()){ //Si se encuentra algo
@@ -91,12 +91,12 @@ public class DAOLibro {
         }
         return libros;
     }
-   public void agregarLibro(Libro libro) throws SQLException {
-        try {
-            PreparedStatement ps;
-
-            String query = "INSERT INTO libros(ISBN, titulo, autor, anio, copias, id_genero) VALUES (?,?,?,?,?,?)";
-            ps = con.prepareStatement(query);
+   @Override
+   public void agregarObjeto(Object object) {
+       String query = "INSERT INTO libros(ISBN, titulo, autor, anio, copias, id_genero) VALUES (?,?,?,?,?,?)";
+        try(PreparedStatement ps = con.prepareStatement(query)){
+            
+            Libro libro = (Libro) object;
 
             ps.setString(1, libro.getISBN());
             ps.setString(2, libro.getTitulo());
@@ -109,17 +109,17 @@ public class DAOLibro {
 
         } catch (SQLException ex) {
             System.err.println(ex.toString());
-            throw new SQLException();
+
         }
 
     }
-   public boolean editarLibro(Libro libro) {
-        try {
-            PreparedStatement ps;
-
-            String query = "UPDATE libros SET titulo = ?, autor = ?, anio = ?, copias = ?, id_genero = ? WHERE ISBN = ?";
-
-            ps = con.prepareStatement(query);
+   @Override
+   public void editarObjeto(Object object) {
+       String query = "UPDATE libros SET titulo = ?, autor = ?, anio = ?, copias = ?, id_genero = ? WHERE ISBN = ?";
+        try(PreparedStatement ps = con.prepareStatement(query)){
+            
+            Libro libro = (Libro) object;
+            
             ps.setString(1, libro.getTitulo());
             ps.setString(2, libro.getAutor());
             ps.setInt(3, libro.getAnio());
@@ -127,22 +127,21 @@ public class DAOLibro {
             ps.setInt(5, libro.getGenero().getIdGenero());
             ps.setString(6, libro.getISBN());
 
-            int rowsUpdated = ps.executeUpdate();
-            return rowsUpdated > 0;
+             ps.executeUpdate();
+
         } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
-        return false;
     }
-   
-   public boolean eliminarLibro(String isbn) {
-        try {
-            PreparedStatement ps;
+   @Override
+   public boolean eliminarObjeto(Object object) {
+       String query = "DELETE FROM libros WHERE ISBN = ? AND NOT EXISTS (SELECT 1 FROM prestamos WHERE isbn_libro = ?)";
+        try(PreparedStatement ps = con.prepareStatement(query)){
+            
+            String isbn = (String) object;
 
-            String query = "DELETE FROM libros WHERE ISBN = ?";
-
-            ps = con.prepareStatement(query);
             ps.setString(1, isbn);
+            ps.setString(2, isbn);
 
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated > 0;
@@ -175,9 +174,9 @@ public class DAOLibro {
         }
         return generos;
     }
-   
-   public ArrayList<Libro> listarLibros() {
-        ArrayList<Libro> libros = new ArrayList<>();
+   @Override
+   public ArrayList<Object> listarObjeto() {
+        ArrayList<Object> libros = new ArrayList<>();
 
         try {
             PreparedStatement ps;
@@ -208,6 +207,7 @@ public class DAOLibro {
         }
         return libros;
     }
+
 
 
 }

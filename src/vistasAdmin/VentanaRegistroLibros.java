@@ -409,7 +409,7 @@ public class VentanaRegistroLibros extends javax.swing.JFrame {
 
         try {
             Libro libro = new Libro(isbn, titulo, autor, anio, copias, seleccionarGenero);
-            controlador.agregarLibro(libro);
+            controlador.agregarObjeto(libro);
             llenarTabla();
             limpiarCampos();
             JOptionPane.showMessageDialog(null, "Libro Registrado");
@@ -444,7 +444,7 @@ public class VentanaRegistroLibros extends javax.swing.JFrame {
         }
 
         Libro libro = new Libro(isbn, titulo, autor, anio, copia, seleccionarGenero);
-        controlador.editarLibro(libro);
+        controlador.editarObjeto(libro);
         llenarTabla();
         limpiarCampos();
         JOptionPane.showMessageDialog(null, "Libro editado exitosamente");
@@ -454,7 +454,7 @@ public class VentanaRegistroLibros extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         String isbn = txtIsbn.getText().trim();
-        controlador.eliminarLibro(isbn);
+        controlador.eliminarObjeto(isbn);
         llenarTabla();
         JOptionPane.showMessageDialog(null, "libro eliminado");
         limpiarCampos();
@@ -547,7 +547,7 @@ public class VentanaRegistroLibros extends javax.swing.JFrame {
 
 private void llenarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
-        ArrayList<Libro> libros = controlador.listarLibros();
+        ArrayList<Object> libros = controlador.listarObject();
         modelo.setColumnIdentifiers(new Object[]{
             "ISBN", "Titulo", "Autor", "Año", "Copias", "Genero"
         });
@@ -555,8 +555,9 @@ private void llenarTabla() {
         tablaLibros.setAutoCreateRowSorter(true);
         sorter = new TableRowSorter<>(modelo);
         tablaLibros.setRowSorter(sorter);
-
-        for (Libro libro : libros) {
+        
+        for (int i = 0; i < libros.size(); i++) {
+            Libro libro = (Libro) libros.get(i);
             modelo.addRow(new Object[]{
                 libro.getISBN(),
                 libro.getTitulo(),

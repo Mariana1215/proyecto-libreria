@@ -6,6 +6,7 @@ package vistasUsuario;
 
 import DAO.DAOUsuario;
 import enums.Rol;
+import excepciones.UsuarioYaRegistradoException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import modelos.Usuario;
@@ -227,12 +228,11 @@ public class ventanaRegistroUsuario extends javax.swing.JFrame {
         
         try{
             Usuario usuario = new Usuario(usuario1, contrasenia, nombre, cedula, telefono, correo, Rol.USUARIO);
-            controlador.registrarUsuario(usuario);
+            controlador.agregarObjeto(usuario);
             JOptionPane.showMessageDialog(null, "Usuario Registrado");
             
-        }catch (SQLException ex){
-            JOptionPane.showMessageDialog(null, "No se pudo registrar el usuario");
-            System.err.println(ex);
+        }catch (UsuarioYaRegistradoException ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

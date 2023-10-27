@@ -22,26 +22,26 @@ public class ControladorLibro {
         this.DAOLibro = new DAOLibro();
     }
     
-    public Libro buscarLibro(String isbn) {
-        return DAOLibro.buscarLibro(isbn);
+    public Object buscarObjeto(Object object) {
+        return DAOLibro.buscarObjeto(object);
     }
    
     public ArrayList<Libro> buscarLibroPorGenero(int idGenero) {
         return DAOLibro.buscarLibroPorGenero(idGenero);
     }
-    public void agregarLibro(Libro libro) throws SQLException {
-        DAOLibro.agregarLibro(libro);
+    public void agregarObjeto(Object object) throws SQLException {
+        DAOLibro.agregarObjeto(object);
     }
-    public boolean editarLibro(Libro libro) {
-        return DAOLibro.editarLibro(libro);
+    public void editarObjeto(Object object) {
+        DAOLibro.editarObjeto(object);
     }
-    public boolean eliminarLibro(String isbn) {
-        return DAOLibro.eliminarLibro(isbn);
+    public boolean eliminarObjeto(Object object) {
+        return DAOLibro.eliminarObjeto(object);
     }
     public ArrayList<Genero> getGeneros() {
         return DAOLibro.getGeneros();
     }
-    public ArrayList<Libro> listarLibros() {
-        return DAOLibro.listarLibros();
+    public ArrayList<Object> listarObject() {
+        return DAOLibro.listarObjeto();
     }
 }
